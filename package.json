@@ -1,0 +1,18 @@
+{
+  "name": "app_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^4.1.1",
+    "body-parser": "^1.19.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {},
+  "author": "Samet Başar",
+  "license": "ISC"
+}
