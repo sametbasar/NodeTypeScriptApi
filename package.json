@@ -1,18 +1,49 @@
 {
-  "name": "app_backend",
+  "name": "mobileapp",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "npm run build && npm run serve",
+    "serve": "node -r dotenv/config build/server.js",
+    "build": "npm run build-ts",
+    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+    "watch-node": "nodemon -r dotenv/config build/server.js",
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sametbasar/nodejs_backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sametbasar/nodejs_backend/issues"
+  },
+  "homepage": "https://github.com/sametbasar/nodejs_backend#readme",
+  "devDependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/cors": "^2.8.6",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.8",
+    "@types/mongoose": "^5.7.36",
+    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/parser": "^2.29.0",
+    "concurrently": "^5.3.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "tslint": "^6.1.3",
+    "typescript": "^4.0.3"
   },
   "dependencies": {
-    "express": "^4.17.1",
-    "helmet": "^4.1.1",
     "body-parser": "^1.19.0",
-    "jsonwebtoken": "^8.5.1"
-  },
-  "devDependencies": {},
-  "author": "Samet Başar",
-  "license": "ISC"
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.9",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
+  }
 }
