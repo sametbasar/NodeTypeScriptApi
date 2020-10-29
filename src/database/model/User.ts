@@ -1,51 +1,68 @@
-import { model, Schema } from 'mongoose';
-import { User } from '../../entities';
+import { Document, model, Schema } from "mongoose"
+import { Badge, User } from "../../entities"
 
-export const DOCUMENT_NAME = 'User';
-export const COLLECTION_NAME = 'users';
 
-const { Types } = Schema;
-const schema = new Schema(
-    {
-        name: {
-            type: Types.String,
-            required: true
-        },
-        surname: {
-            type: Types.String,
-            required: true
-        },
-        email: {
-            type: Types.String
-        },
-        sex: {
-            type: Types.String
-        },
-        password: {
-            type: Types.String,
-            required: true
-        },
-        phone: {
-            type: Types.String
-        },
-        address: {
-            type: Types.String
-        },
-        city: {
-            type: Types.String
-        },
-        district: {
-            type: Types.String
-        },
-        createdDate: {
-            type: Types.Date,
-            default: Date.now(),
-        },
-        updatedDate: {
-            type: Types.Date,
-        },
+// Schema
+const UserSchema = new Schema({
+    identityNumber: {
+        required: true,
+        type: Number
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    surname: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String
+    },
+    gender: {
+        type: String
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String
+    },
+    address: {
+        type: String
+    },
+    city: {
+        type: String
+    },
+    district: {
+        type: String
+    },
+    createdDate: {
+        type: Date,
+        default: Date.now(),
+    },
+    updatedDate: {
+        type: Date,
+    },
+    token: {
+        type: String
+    },
+    contacts: {
+        type: Array
+    },
+    badge: {
+        type: Array
     }
-);
+})
 
-export const UserModel = model<User>(DOCUMENT_NAME, schema, COLLECTION_NAME);
+
+
+export interface UserBaseDocument extends User, Document {
+}
+
+
+// Default export
+export default model<UserBaseDocument>("User", UserSchema)
+
 

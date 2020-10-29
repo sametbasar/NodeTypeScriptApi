@@ -1,38 +1,43 @@
 import { User } from '../../entities';
-import { UserModel } from '../model/User';
-import { IDataBase } from '../../types';
-import { Types } from 'mongoose';
+import { IRead, IWrite } from '../../interfaces';
+import UserModel, { UserBaseDocument } from '../model/User';
 
-export default class UserRepo implements IDataBase {
+export default class UserRepo implements IRead<User>, IWrite<User> {
 
-    public async create(user: User): Promise<{ user: User }> {
+    /**
+     * Returns a Created User Object Value
+     * @param user Object on create the user object.
+     */
+    public async create(user: User): Promise<UserBaseDocument> {
         const now = new Date();
         user.updatedDate = now;
         const createdUser = await UserModel.create(user);
-        return { user: createdUser.toObject() }
+        return createdUser.toObject()
     }
-    public async update(user: User): Promise<{ user: User }> {
+    /**
+     * Returns a Updated User Object Value
+     * @param user Object on update the user object.
+     */
+    public async update(user: User): Promise<User> {
         const now = new Date();
         user.updatedDate = now; //last updated time
-        const updateUser = await UserModel.updateOne({
-            _id: user._id
+        const updateUser = await UserModel.findOneAndUpdate({
+            email: user.email
         }, {
-            $set: user,
-        })
-        return { user: updateUser.toObject() }
+            $set: user
+        });
+         
+        return updateUser.toObject()
+    }
+    public async findOne(query: Object): Promise<UserBaseDocument> {
+        return await UserModel.findOne(query);
+    }
+    public delete(id: string): Promise<boolean> {
+        throw new Error('Method not implemented.');
     }
 
-    public async findOneByEmail() {
-        //To do list
+    public find(item: User): Promise<User> {
+        throw new Error('Method not implemented.');
     }
 
-    public async findOneById() {
-        //To do list
-    }
 }
-
-// function dataGet(database: IDataBase) {
-//     const user = {};
-//     database.create(user)
-// }
-// dataGet(new UserRepo());

@@ -1,12 +1,13 @@
-import express from 'express';
-import { SuccessResponse, InternalErrorResponse } from '../../core/ApiResponse';
-import { InternalError } from '../../core/ApiError';
+import express, { Request, Response } from 'express';
+import { AuthMiddleware } from '../../middleware/'
+import Auth from './Auth'
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    const a = new InternalError('Bir Hata Oluştu');
-    const response = new InternalErrorResponse(a.name + ' ' + a.type + ' ' + a.message);
-    response.send(res);
+router.get('/', AuthMiddleware(), (req: Request, res: Response) => {
+    res.send('Api Helper Docs');
 });
+
+router.use('/Auth', Auth);
+
 export default router;

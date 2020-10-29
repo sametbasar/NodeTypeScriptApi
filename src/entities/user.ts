@@ -1,11 +1,17 @@
-import { Document } from "mongoose"; 
-import { Badge } from './Badge';
+import { Badge } from "./Badge";
+import Contacts from "./contacts";
 
-export default interface User extends Document {
+enum Gender {
+    Male = "Erkek",
+    Female = "Kadın"
+}
+
+export default interface User {
+    identityNumber: Number,
     name: string,
     surname: string,
     email: string,
-    sex?: string,
+    gender?: Gender,
     password: string,
     phone?: string,
     address?: string,
@@ -13,6 +19,7 @@ export default interface User extends Document {
     district?: string,
     createdDate: Date,
     updatedDate?: Date,
-    contacts?: Array<object>,
-    badge?: Badge[]
+    badge?: Badge[],
+    contacts?: Contacts[],
+    token?: String
 }

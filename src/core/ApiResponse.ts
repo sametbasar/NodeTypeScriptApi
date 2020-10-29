@@ -87,7 +87,7 @@ export class SuccessMsgResponse extends ApiResponse {
 
 export class FailureMsgResponse extends ApiResponse {
     constructor(message: string) {
-        super(StatusCode.FAILURE, ResponseStatus.SUCCESS, message);
+        super(StatusCode.FAILURE, ResponseStatus.BAD_REQUEST, message);
     }
 }
 
@@ -98,6 +98,15 @@ export class SuccessResponse<T> extends ApiResponse {
 
     send(res: Response): Response {
         return super.prepare<SuccessResponse<T>>(res, this);
+    }
+}
+
+export class FailureResponse<T> extends ApiResponse {
+    constructor(message: string, private data: T) {
+        super(StatusCode.FAILURE, ResponseStatus.BAD_REQUEST, message);
+    }
+    send(res: Response): Response {
+        return super.prepare<FailureResponse<T>>(res, this);
     }
 }
 
@@ -114,12 +123,3 @@ export class AccessTokenErrorResponse extends ApiResponse {
     }
 }
 
-export class TokenRefreshResponse extends ApiResponse {
-    constructor(message: string, private accessToken: string, private refreshToken: string) {
-        super(StatusCode.SUCCESS, ResponseStatus.SUCCESS, message);
-    }
-
-    send(res: Response): Response {
-        return super.prepare<TokenRefreshResponse>(res, this);
-    }
-}
