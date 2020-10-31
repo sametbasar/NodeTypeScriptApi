@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
 import { Auth, User } from '../../../entities';
 import AuthService from '../../../services/Auth'
-import { validationResult } from 'express-validator/check';
-import { loginValidation, registerValidation } from './validations'
+import { validationResult } from 'express-validator';
+import { loginValidation, registerValidation } from './validations';
 import { FailureResponse } from '../../../core/ApiResponse';
 
 
@@ -14,7 +14,6 @@ router.post('/SignIn', registerValidation, (req: Request, res: Response) => {
         const errorMessage = errors.array();
         const errorResponse = new FailureResponse('Zorunlu alanları doldurunuz.', errorMessage);
         errorResponse.send(res);
-        return
     } else {
         const user: User = req.body;
         AuthService.SignIn(user, res);

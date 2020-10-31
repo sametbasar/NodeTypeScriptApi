@@ -1,37 +1,37 @@
-import { check } from 'express-validator/check';
+import { body } from 'express-validator';
 
 export const loginValidation = [
-    check('email', 'Geçerli Bir mail adresi giriniz')
+    body('email', 'Geçerli Bir mail adresi giriniz')
         .not()
         .isEmpty()
         .isEmail(),
-    check('password')
+    body('password')
         .not()
         .isEmpty()
 ]
 
 export const registerValidation = [
-    check('email', 'Geçerli Bir mail adresi giriniz')
+    body('email', 'Geçerli Bir mail adresi giriniz')
         .not()
         .isEmpty()
         .isEmail(),
-    check('phone')
+    body('phone')
         .not()
         .isEmpty()
         .isNumeric(),
-    check('name')
+    body('name')
         .not()
         .isEmpty()
         .isString(),
-    check('surname')
+    body('surname')
         .not()
         .isEmpty()
         .isString(),
-    check('identityNumber')
+    body('identityNumber')
         .not()
         .isEmpty()
         .isNumeric(),
-    check('password')
+    body('password')
         .not()
         .isEmpty()
 ];

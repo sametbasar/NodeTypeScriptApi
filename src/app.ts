@@ -9,6 +9,11 @@ import routesV1 from './routes/v1';
 process.on('uncaughtException', (e) => {
     Logger.error(e);
 });
+process.stdout.on('error', function (err) {
+    if (err.code == "EPIPE") {
+        process.exit(0);
+    }
+});
 
 const app = express();
 
