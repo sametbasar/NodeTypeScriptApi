@@ -1,16 +1,6 @@
 import { body } from 'express-validator';
 
-export const loginValidation = [
-    body('email', 'Geçerli Bir mail adresi giriniz')
-        .not()
-        .isEmpty()
-        .isEmail(),
-    body('password')
-        .not()
-        .isEmpty()
-]
-
-export const registerValidation = [
+export const userValidation = [
     body('email', 'Geçerli Bir mail adresi giriniz')
         .not()
         .isEmpty()
@@ -31,14 +21,4 @@ export const registerValidation = [
         .not()
         .isEmpty()
         .isNumeric({ no_symbols: true }),
-    body('password')
-        .not()
-        .isEmpty()
-];
-
-export const customerInfoValidation = [
-    body('email', 'Geçerli bir mail adresi giriniz')
-        .not()
-        .isEmpty({ ignore_whitespace: true })
-        .isEmail()
 ]

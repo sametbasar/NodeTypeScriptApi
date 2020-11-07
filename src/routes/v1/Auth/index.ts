@@ -1,13 +1,13 @@
-import express, { Request, Response } from 'express';
+import { Router, Request, Response } from 'express';
 import { Auth, User } from '../../../entities';
-import UserBus from '../../../business/User';
+import { AuthBus } from '../../../business';
 import { validationResult } from 'express-validator';
-import { loginValidation, registerValidation } from './validations';
+import { loginValidation, customerInfoValidation, registerValidation } from './validations';
 import { FailureResponse } from '../../../core/ApiResponse';
 import { IMessages } from '../../../interfaces';
 
 
-const router = express.Router();
+const router = Router();
 
 router.post('/SignIn', registerValidation, (req: Request, res: Response) => {
     const errors = validationResult(req);
@@ -17,7 +17,7 @@ router.post('/SignIn', registerValidation, (req: Request, res: Response) => {
         errorResponse.send(res);
     } else {
         const user: User = req.body;
-        UserBus.SignIn(user, res);
+        AuthBus.SignIn(user, res);
     }
 });
 
@@ -29,7 +29,25 @@ router.post('/Login', loginValidation, (req: Request, res: Response) => {
         errorResponse.send(res);
     } else {
         const user: Auth = req.body;
-        UserBus.Login(user, res);
+        AuthBus.Login(user, res);
     }
 });
+
+router.post('/GetCustomerInfo', customerInfoValidation, (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const errorMessage = errors.array();
+        const errorResponse = new FailureResponse(IMessages.FillRequiredFields, errorMessage);
+        errorResponse.send(res);
+    } else {
+        const email: String = req.body?.email;
+        AuthBus.isValidToken(email, res);
+    }
+});
+
+router.post('/IsValidToken', (req: Request, res: Response) => {
+    const token: String = req.body.token;
+    AuthBus.isValidToken(token, res);
+});
+
 export default router;

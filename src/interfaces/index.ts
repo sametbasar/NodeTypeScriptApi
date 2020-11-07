@@ -1,11 +1,7 @@
-import IRead from './IRead';
-import IWrite from './IWrite';
 import IEntityRepository from './IEntityRepository';
-import { IMessages } from './IMessages';
+import { IMessages } from '../controller/IMessages';
 
 export {
-    IRead,
-    IWrite,
     IEntityRepository,
     IMessages
 }

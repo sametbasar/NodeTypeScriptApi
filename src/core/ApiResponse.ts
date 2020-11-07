@@ -56,7 +56,7 @@ export class SuccessResponse<T> extends ApiResponse {
 
 export class FailureResponse<T> extends ApiResponse {
     constructor(message: IMessages, private Data: T) {
-        super(ResponseStatus.BAD_REQUEST, false, message);
+        super(ResponseStatus.SUCCESS, false, message);
     }
     send(res: Response): Response {
         return super.prepare<FailureResponse<T>>(res, this);
@@ -65,7 +65,7 @@ export class FailureResponse<T> extends ApiResponse {
 
 export class FailureMessageResponse extends ApiResponse {
     constructor(message: IMessages) {
-        super(ResponseStatus.BAD_REQUEST, false, message)
+        super(ResponseStatus.SUCCESS, false, message)
     }
     send(res: Response): Response {
         return super.prepare<FailureMessageResponse>(res, this);

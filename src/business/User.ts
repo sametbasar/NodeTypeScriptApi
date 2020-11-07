@@ -1,44 +1,29 @@
 import { Response } from "express";
-import { Auth, User } from "../entities";
-import { UserDal } from '../dataAccess';
 import { SuccessResponse, FailureMessageResponse } from '../core/ApiResponse';
 import { IMessages } from "../interfaces";
-import BaseController from "../controller/BaseController";
+import { UserDal } from '../dataAccess';
+import { User } from "../entities";
+import UserModel from "../database/model/User";
+import Logger from "../core/Logger";
+
 
 class UserBus {
-    public static async SignIn(user: User, res: Response): Promise<any> {
-        const isRegistered = await UserDal.get(user.email);
-        if (isRegistered && !isRegistered.errors) {
-            const response = new FailureMessageResponse(IMessages.AlreadyRegistered);
+
+    private static userDal = new UserDal(UserModel);
+
+    public static async Save(user: User, res: Response): Promise<any> {
+        try {
+            const query = { email: user.email };
+            user.updatedDate = new Date();
+            const data = await this.userDal.update(user, query);
+            const response = new SuccessResponse(IMessages.OperationSuccess, data.toObject());
             return response.send(res);
-        } else {
-            const createUser = await UserDal.add(user);
-            if (!createUser.errors) {
-                const data = createUser.toObject();
-                const response = new SuccessResponse(IMessages.OperationSuccess, data);
-                return response.send(res);
-            }
-        }
-        const response = new FailureMessageResponse(IMessages.OperationFailed);
-        response.send(res);
+        } catch (err) {
+            Logger.error(err);
+            const response = new FailureMessageResponse(IMessages.BadParameters);
+            return response.send(res);
+        } 
     }
-    public static async Login(user: Auth, res: Response): Promise<any> {
-        const model = await (await UserDal.get(user.email));
-        if (model && !model.errors) {
-            if (model.password === user.password) {
-                const token = await BaseController.JWEncode(model);
-                model.updatedDate = new Date();
-                model.token = token;
-                const data = await UserDal.update(model);
-                const response = new SuccessResponse(IMessages.OperationSuccess, data);
-                return response.send(res);
-            } else {
-                const response = new FailureMessageResponse(IMessages.AuthenticationFailed);
-                return response.send(res);
-            }
-        }
-        const response = new FailureMessageResponse(IMessages.OperationFailed);
-        return response.send(res);
-    }
+
 }
 export default UserBus;

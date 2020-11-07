@@ -12,3 +12,5 @@ export const db = {
 export const logDirectory = process.env.LOG_DIR;
 
 export const corsUrl = process.env.CORS_URL;
+
+export const jwtKey = process.env.JWT_KEY;
