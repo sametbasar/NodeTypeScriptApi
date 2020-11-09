@@ -1,5 +1,5 @@
 import BaseController from "../controller/BaseController";
-import { Response } from "express";
+import { NextFunction, Response } from "express";
 import { SuccessResponse, FailureMessageResponse } from '../core/ApiResponse';
 import { IMessages } from "../interfaces";
 import { AuthDal } from '../dataAccess';
@@ -42,7 +42,13 @@ class AuthBus {
             const model = data.toObject();
             if (model && !model.errors) {
                 if (model.password === user.password) {
-                    const token = await BaseController.JWEncode(model);
+                    const tokenCreater = {
+                        id: model._id,
+                        email: model.email,
+                        name: model.name,
+                        surname: model.surname,
+                    }
+                    const token = await BaseController.JWEncode(tokenCreater);
                     model.updatedDate = new Date();
                     model.token = token;
                     await this.authDal.update(model, query);
@@ -69,9 +75,29 @@ class AuthBus {
                 if (result && result.email) {
                     const query = { email: result.email };
                     const model = await this.authDal.get(query);
-                    if (model && !model.errors) {
+                    if (model && !model.errors && model.token === token) {
                         const response = new SuccessResponse(IMessages.OperationSuccess, model);
                         return response.send(res);
+                    }
+                }
+                const response = new FailureMessageResponse(IMessages.TokenFailed);
+                return response.send(res);
+            }
+        } catch (error) {
+            Logger.error(error);
+            const response = new FailureMessageResponse(IMessages.TokenFailed);
+            return response.send(res);
+        }
+    }
+    public static async middleware(token: String, res: Response, next: NextFunction): Promise<any> {
+        try {
+            if (token) {
+                const result: any = await BaseController.JWTDecode(token);
+                if (result && result.email) {
+                    const query = { email: result.email };
+                    const model = await this.authDal.get(query);
+                    if (model && !model.errors && model.token === token) {
+                        return next();
                     }
                 }
                 const response = new FailureMessageResponse(IMessages.TokenFailed);

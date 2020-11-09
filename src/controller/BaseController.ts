@@ -10,7 +10,9 @@ export default abstract class BaseController {
     * @param code Any variable to encode
     */
     public static async JWEncode(code: any): Promise<String> {
-        const JWTCode = await JWT.sign(code, this.secretKey);
+        const JWTCode = await JWT.sign(code, this.secretKey, {
+            expiresIn: 7776000 // 3months active
+        });
         return JWTCode.toString()
     }
 

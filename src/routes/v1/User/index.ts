@@ -8,7 +8,7 @@ import { AuthMiddleware } from '../../../middleware';
 
 const router = Router();
 
-router.post('/Save', AuthMiddleware(), userValidation, (req: Request, res: Response) => {
+router.put('/Save', AuthMiddleware(), userValidation, (req: Request, res: Response) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const errorMessage = errors.array();
@@ -19,6 +19,5 @@ router.post('/Save', AuthMiddleware(), userValidation, (req: Request, res: Respo
         UserBus.Save(data, res);
     }
 });
-
 
 export default router;

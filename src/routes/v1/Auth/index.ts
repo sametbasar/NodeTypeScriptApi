@@ -45,8 +45,8 @@ router.post('/GetCustomerInfo', customerInfoValidation, (req: Request, res: Resp
     }
 });
 
-router.post('/IsValidToken', (req: Request, res: Response) => {
-    const token: String = req.body.token;
+router.get('/IsValidToken', (req: Request, res: Response) => {
+    const token = req.headers['authorization'];
     AuthBus.isValidToken(token, res);
 });
 
