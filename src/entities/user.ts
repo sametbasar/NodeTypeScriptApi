@@ -1,5 +1,6 @@
 import { Badge } from "./Badge";
 import Contacts from "./contacts";
+import { Notification } from './index';
 
 enum Gender {
     Male = "Erkek",
@@ -21,5 +22,7 @@ export default interface User {
     updatedDate?: Date,
     badge?: Badge[],
     contacts?: Contacts[],
-    token?: String
+    token?: String,
+    notifications: Notification[],
+    emergency: Boolean
 }

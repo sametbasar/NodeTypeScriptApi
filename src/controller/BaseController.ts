@@ -1,5 +1,7 @@
 import JWT from 'jsonwebtoken';
 import { jwtKey } from '../config';
+import { Notification } from '../entities';
+import { ITypes } from './ITypes';
 
 export default abstract class BaseController {
 
@@ -24,5 +26,26 @@ export default abstract class BaseController {
         const JWTCode = await JWT.verify(code, this.secretKey);
         return JWTCode
     }
+
+    /**
+    *  Create your notication
+    *  @param name string bir yazı gönderebilirsiniz bu alan zorunludur.
+    *  @param message string bir yazı gönderebilirsiniz bu alan zorunludur.
+    *  @param type ITypes interface türünde type göndermeniz gerekmektedir.
+    *  @param coords string türünde koordinat yollayabilirsiniz bu alan zorunlu değildir.
+    *  @param date Date türünde gönderilmektedir bu değişkenin default değeri istek atıldığı zamandır
+    **/
+    public static NotifyCreater(name: String, email: String, message: String, type: ITypes, coords?: String, date: Date = new Date()) {
+        const notify: Notification = {
+            name,
+            email,
+            message,
+            type,
+            coords,
+            date
+        }
+        return notify;
+    }
+
 
 }

@@ -8,5 +8,6 @@ export enum IMessages {
     BadParameters = "Bad Parameters",
     InternalError = "Internal Error",
     AlreadyRegistered = "Mail Adresi Kayıtlı",
-    FillRequiredFields = "Zorunlu alanları doldurunuz"
+    FillRequiredFields = "Zorunlu alanları doldurunuz",
+    EmailNotFound = "E-Mail adresi bulunamadı."
 }

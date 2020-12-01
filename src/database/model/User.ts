@@ -53,6 +53,12 @@ const UserSchema = new Schema({
     },
     badge: {
         type: Array
+    },
+    notifications: {
+        type: Array
+    },
+    emergency: {
+        type: Boolean
     }
 })
 
