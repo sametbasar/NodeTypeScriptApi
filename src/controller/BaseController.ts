@@ -1,6 +1,6 @@
 import JWT from 'jsonwebtoken';
 import { jwtKey } from '../config';
-import { Notification } from '../entities';
+import { Coords, Notification } from '../entities';
 import { ITypes } from './ITypes';
 
 export default abstract class BaseController {
@@ -35,7 +35,7 @@ export default abstract class BaseController {
     *  @param coords string türünde koordinat yollayabilirsiniz bu alan zorunlu değildir.
     *  @param date Date türünde gönderilmektedir bu değişkenin default değeri istek atıldığı zamandır
     **/
-    public static NotifyCreater(name: String, email: String, message: String, type: ITypes, coords?: String, date: Date = new Date()) {
+    public static NotifyCreater(name: String, email: String, message: String, type: ITypes, coords?: Coords, date: Date = new Date()) {
         const notify: Notification = {
             name,
             email,

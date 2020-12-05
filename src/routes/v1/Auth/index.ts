@@ -16,7 +16,7 @@ router.post('/SignIn', registerValidation, (req: Request, res: Response) => {
         const errorResponse = new FailureResponse(IMessages.FillRequiredFields, errorMessage);
         errorResponse.send(res);
     } else {
-        const user: User = req.body;
+        let user: User = req.body;
         AuthBus.SignIn(user, res);
     }
 });
